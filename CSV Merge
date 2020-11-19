@@ -1,0 +1,30 @@
+%dw 2.0
+ import * from dw::core::Arrays
+ output application/csv
+ ---
+contacts map ((contact, index) -> {
+    contactId: contact.Id,
+    contactName: contact.Name,
+    AccountId: contact.AccountId,
+    AccountName: (accounts filter ((account, index) -> account.Id == contact.AccountId )).Name[0]
+})
+
+
+Accounts
+Id,Name
+A1,Target
+A2,Walmart
+
+Contacts
+Id,AccountId,Name
+C1,A1,John
+C2,A2,Bob
+C3,A2,Rick
+C4,A3,Tom
+
+Output
+contactId,contactName,AccountId,AccountName
+C1,John,A1,Target
+C2,Bob,A2,Walmart
+C3,Rick,A2,Walmart
+C4,Tom,A3,
